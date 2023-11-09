@@ -1,3 +1,10 @@
-function getEleneByAttr(key, valor) {
-  return document.querySelector(`[${key}="${valor}"]`);
+function getElementByAttr(key, valor, index) {
+  const elementos = document.querySelectorAll(`[${key}]`);
+  if (index < 0) {
+    return elementos[elementos.length + index - 1];
+  } else if (index > 0) {
+    return elementos[index];
+  } else {
+    return elementos[0];
+  }
 }
