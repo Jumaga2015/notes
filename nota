@@ -1,1 +1,3 @@
-Hola y adios
+function getEleneByAttr(key, valor) {
+  return document.querySelector(`[${key}="${valor}"]`);
+}
