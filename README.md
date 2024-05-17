@@ -42,8 +42,11 @@ $fechaMinima = Get-Date "2024-05-01"
 # Copia los archivos que coinciden con la máscara y que fueron modificados después de la fecha mínima
 foreach ($carpeta in $carpetasOrigen) {
     Get-ChildItem -Path $carpeta -File -Recurse | Where-Object { $_.LastWriteTime -ge $fechaMinima -and $_.Name -like $mascara } | ForEach-Object {
-        $destino = Join-Path -Path $carpetaDestino -ChildPath $_.Name
+        $rutaRelativa = $_.FullName -replace [regex]::escape($carpeta), ""
+        $destino = Join-Path -Path $carpetaDestino -ChildPath $rutaRelativa
+        Write-Host "Copiando archivo desde $($_.FullName) a $destino"
         Copy-Item -Path $_.FullName -Destination $destino -Force
     }
 }
+
 
