@@ -26,3 +26,24 @@ while ($true) {
     ObtenerNumeroArchivos
     Start-Sleep -Seconds 3600  # Esperar 1 hora
 }
+
+
+# Copiar ficheros por fechas
+# Define la ruta de las carpetas de origen y destino
+$carpetasOrigen = "C:\Ruta\Origen1", "C:\Ruta\Origen2", "C:\Ruta\Origen3"
+$carpetaDestino = "C:\Ruta\Destino"
+
+# Define la máscara de archivo (por ejemplo, "*.txt" para archivos de texto)
+$mascara = "*.txt"
+
+# Define la fecha mínima desde la cual deseas copiar los archivos
+$fechaMinima = Get-Date "2024-05-01"
+
+# Copia los archivos que coinciden con la máscara y que fueron modificados después de la fecha mínima
+foreach ($carpeta in $carpetasOrigen) {
+    Get-ChildItem -Path $carpeta -File -Recurse | Where-Object { $_.LastWriteTime -ge $fechaMinima -and $_.Name -like $mascara } | ForEach-Object {
+        $destino = Join-Path -Path $carpetaDestino -ChildPath $_.Name
+        Copy-Item -Path $_.FullName -Destination $destino -Force
+    }
+}
+
